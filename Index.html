@@ -3,106 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasySummarize | AI Article Summarizer</title>
+    <title>AI Article Summarizer | Complete Single File</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ===== ROOT VARIABLES ===== */
         :root {
             --primary: #2a6e3f;
+            --primary-dark: #1e5a32;
             --primary-light: #3a8e4f;
             --secondary: #f5f7fa;
             --dark: #1a1a2e;
             --light: #ffffff;
             --gray: #6c757d;
             --gray-light: #e9ecef;
+            --gray-dark: #343a40;
             --border: #dee2e6;
             --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --transition: all 0.3s ease;
         }
-        
+
+        /* ===== RESET & BASE STYLES ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
             background-color: var(--secondary);
             color: var(--dark);
             line-height: 1.6;
+            min-height: 100vh;
         }
-        
+
         .container {
             display: flex;
             min-height: 100vh;
+            max-width: 1600px;
+            margin: 0 auto;
         }
-        
-        /* Sidebar Navigation */
+
+        /* ===== SIDEBAR ===== */
         .sidebar {
-            width: 220px;
+            width: 250px;
             background-color: var(--light);
             border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            box-shadow: var(--shadow);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
         }
-        
+
         .logo {
-            padding: 20px;
+            padding: 25px;
             border-bottom: 1px solid var(--border);
+            text-align: center;
         }
-        
+
         .logo h1 {
             color: var(--primary);
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
+            margin-bottom: 5px;
         }
-        
+
         .logo span {
             color: var(--gray);
             font-weight: 300;
         }
-        
+
+        .logo .subtitle {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
         .nav-links {
             padding: 20px 0;
             flex-grow: 1;
         }
-        
+
         .nav-links ul {
             list-style: none;
         }
-        
+
         .nav-links li {
-            padding: 12px 20px;
+            padding: 12px 25px;
             display: flex;
             align-items: center;
-            transition: all 0.3s;
+            transition: var(--transition);
             cursor: pointer;
             border-left: 3px solid transparent;
         }
-        
+
         .nav-links li:hover {
             background-color: var(--gray-light);
             border-left: 3px solid var(--primary);
         }
-        
+
         .nav-links li.active {
             background-color: rgba(42, 110, 63, 0.1);
             border-left: 3px solid var(--primary);
             color: var(--primary);
             font-weight: 600;
         }
-        
+
         .nav-links i {
             margin-right: 10px;
             width: 20px;
             text-align: center;
         }
-        
+
         .easy-apps {
             padding: 20px;
             border-top: 1px solid var(--border);
         }
-        
+
         .easy-apps h3 {
             font-size: 0.9rem;
             color: var(--gray);
@@ -110,7 +135,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        
+
         .app-badge {
             display: inline-block;
             background-color: var(--primary);
@@ -120,126 +145,140 @@
             font-size: 0.8rem;
             margin-right: 5px;
             margin-bottom: 5px;
+            cursor: pointer;
         }
-        
-        /* Main Content */
+
+        .app-badge:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* ===== MAIN CONTENT ===== */
         .main-content {
             flex-grow: 1;
-            padding: 20px 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
+            padding: 30px 40px;
+            margin-left: 250px;
+            width: calc(100% - 250px);
         }
-        
+
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
-            padding-bottom: 15px;
+            padding-bottom: 20px;
             border-bottom: 1px solid var(--border);
         }
-        
+
         .header h2 {
             font-size: 1.8rem;
             color: var(--dark);
         }
-        
+
         .date-display {
             color: var(--gray);
             font-size: 0.9rem;
+            background: var(--light);
+            padding: 8px 15px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
         }
-        
+
+        /* ===== SEARCH BOX ===== */
         .search-box {
             margin-bottom: 30px;
         }
-        
+
         .search-box input {
             width: 100%;
             padding: 15px 20px;
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: var(--radius);
             font-size: 1rem;
-            transition: all 0.3s;
+            transition: var(--transition);
             background-color: var(--light);
         }
-        
+
         .search-box input:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(42, 110, 63, 0.1);
         }
-        
+
         .search-box input::placeholder {
             color: var(--gray);
         }
-        
-        /* Getting Started Section */
+
+        /* ===== GETTING STARTED ===== */
         .getting-started {
             background-color: var(--light);
-            border-radius: 10px;
+            border-radius: var(--radius);
             padding: 25px;
             margin-bottom: 40px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            box-shadow: var(--shadow);
         }
-        
+
         .getting-started h3 {
             color: var(--primary);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        
+
         .start-cards {
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
+            margin-top: 20px;
         }
-        
+
         .card {
             flex: 1;
             min-width: 250px;
             background-color: var(--gray-light);
-            border-radius: 8px;
+            border-radius: var(--radius);
             padding: 20px;
-            transition: all 0.3s;
+            transition: var(--transition);
             border-left: 4px solid var(--primary);
             cursor: pointer;
+            text-align: center;
         }
-        
+
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-lg);
         }
-        
+
         .card h4 {
             color: var(--dark);
             margin-bottom: 10px;
             font-size: 1.1rem;
         }
-        
+
         .card p {
             color: var(--gray);
             font-size: 0.9rem;
         }
-        
-        /* AI Assistant Section */
+
+        /* ===== AI ASSISTANT ===== */
         .ai-assistant {
             background-color: var(--light);
-            border-radius: 10px;
+            border-radius: var(--radius);
             padding: 30px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            box-shadow: var(--shadow);
             margin-bottom: 40px;
         }
-        
+
         .ai-header {
             display: flex;
             align-items: center;
             margin-bottom: 25px;
         }
-        
+
         .ai-avatar {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             background-color: var(--primary);
             border-radius: 50%;
             display: flex;
@@ -247,167 +286,340 @@
             justify-content: center;
             margin-right: 15px;
         }
-        
+
         .ai-avatar i {
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
         }
-        
+
         .ai-info h3 {
             color: var(--dark);
             margin-bottom: 5px;
         }
-        
+
         .ai-info p {
             color: var(--gray);
             font-size: 0.9rem;
         }
-        
-        /* Summarizer Interface */
+
+        /* ===== SUMMARIZER INTERFACE ===== */
         .summarizer-interface {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
         }
-        
+
+        @media (max-width: 1200px) {
+            .summarizer-interface {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .input-section, .output-section {
             flex: 1;
         }
-        
+
         .input-section h4, .output-section h4 {
             color: var(--dark);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             font-size: 1.1rem;
         }
-        
+
+        /* ===== INPUT SECTION ===== */
         .input-box {
             border: 1px solid var(--border);
-            border-radius: 8px;
-            background-color: white;
+            border-radius: var(--radius);
+            background-color: var(--light);
             padding: 15px;
-            min-height: 200px;
-            max-height: 300px;
+            min-height: 250px;
+            max-height: 400px;
             overflow-y: auto;
+            margin-bottom: 15px;
         }
-        
+
         .input-box textarea {
             width: 100%;
             border: none;
             outline: none;
             resize: none;
-            min-height: 170px;
+            min-height: 200px;
             font-size: 1rem;
             line-height: 1.6;
             font-family: inherit;
+            background: transparent;
         }
-        
+
         .input-box textarea::placeholder {
             color: var(--gray);
         }
-        
+
+        /* ===== INPUT OPTIONS ===== */
         .input-options {
             display: flex;
             justify-content: space-between;
-            margin-top: 15px;
+            margin: 15px 0;
             flex-wrap: wrap;
             gap: 10px;
         }
-        
+
         .option-btn {
             background-color: var(--gray-light);
-            border: none;
+            border: 2px solid transparent;
             padding: 8px 15px;
             border-radius: 20px;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             color: var(--dark);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
-        
+
         .option-btn:hover {
             background-color: var(--border);
         }
-        
+
         .option-btn.active {
             background-color: var(--primary);
             color: white;
+            border-color: var(--primary-light);
         }
-        
+
+        .input-options span {
+            font-weight: 600;
+            color: var(--dark);
+            margin-right: 10px;
+        }
+
+        /* ===== ACTION BUTTONS ===== */
         .action-buttons {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             margin-top: 20px;
+            flex-wrap: wrap;
         }
-        
+
         .btn {
             padding: 12px 25px;
             border: none;
-            border-radius: 6px;
+            border-radius: var(--radius);
             font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 8px;
         }
-        
+
         .btn-primary {
             background-color: var(--primary);
             color: white;
         }
-        
+
         .btn-primary:hover {
-            background-color: var(--primary-light);
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
         }
-        
+
         .btn-secondary {
             background-color: var(--gray-light);
             color: var(--dark);
+            border: 1px solid var(--border);
         }
-        
+
         .btn-secondary:hover {
             background-color: var(--border);
         }
-        
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        /* ===== FILE UPLOAD ===== */
+        .file-upload-area {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 40px 20px;
+            text-align: center;
+            margin: 15px 0;
+            transition: var(--transition);
+            cursor: pointer;
+            background-color: var(--secondary);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 250px;
+        }
+
+        .file-upload-area.drag-over {
+            border-color: var(--primary);
+            background-color: rgba(42, 110, 63, 0.05);
+        }
+
+        .file-upload-content i {
+            color: var(--primary);
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .file-upload-content h4 {
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .file-upload-content p {
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .file-types {
+            font-size: 0.85rem;
+            color: var(--gray);
+            font-style: italic;
+            margin: 10px 0 20px;
+        }
+
+        .file-info {
+            display: none;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--light);
+            padding: 15px;
+            border-radius: var(--radius);
+            border-left: 4px solid var(--primary);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .file-details {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .file-details i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        /* ===== OUTPUT SECTION ===== */
         .output-box {
             border: 1px solid var(--border);
-            border-radius: 8px;
-            background-color: white;
+            border-radius: var(--radius);
+            background-color: var(--light);
             padding: 20px;
-            min-height: 200px;
-            max-height: 400px;
+            min-height: 300px;
+            max-height: 500px;
             overflow-y: auto;
             line-height: 1.7;
+            position: relative;
         }
-        
+
         .output-placeholder {
             color: var(--gray);
             font-style: italic;
             text-align: center;
+            padding: 60px 20px;
+        }
+
+        .output-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--gray-light);
+        }
+
+        /* ===== LOADING INDICATOR ===== */
+        .loading {
+            display: none;
+            text-align: center;
             padding: 40px 20px;
         }
-        
+
+        .loader {
+            border: 5px solid var(--gray-light);
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== SUMMARY RESULTS ===== */
+        .summary-results {
+            display: none;
+        }
+
+        .summary-content {
+            color: var(--dark);
+            line-height: 1.8;
+        }
+
+        .summary-content h4 {
+            color: var(--primary);
+            margin: 20px 0 10px;
+            font-size: 1.1rem;
+        }
+
+        .summary-content ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .summary-content li {
+            margin-bottom: 8px;
+        }
+
+        /* ===== SUMMARY STATS ===== */
         .summary-stats {
-            display: flex;
-            gap: 20px;
-            margin-top: 15px;
+            display: none;
+            gap: 15px;
+            margin-top: 20px;
             flex-wrap: wrap;
         }
-        
+
         .stat {
             background-color: var(--gray-light);
-            padding: 10px 15px;
-            border-radius: 6px;
+            padding: 12px 18px;
+            border-radius: var(--radius);
             font-size: 0.9rem;
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
         }
-        
+
         .stat span {
             font-weight: 700;
             color: var(--primary);
+            display: block;
+            font-size: 1.2rem;
+            margin-top: 5px;
         }
-        
-        /* Footer */
+
+        /* ===== OUTPUT ACTIONS ===== */
+        .output-actions {
+            display: none;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* ===== FOOTER ===== */
         .footer {
             text-align: center;
             padding: 20px;
@@ -416,8 +628,8 @@
             border-top: 1px solid var(--border);
             margin-top: 30px;
         }
-        
-        /* Responsive */
+
+        /* ===== RESPONSIVE DESIGN ===== */
         @media (max-width: 992px) {
             .container {
                 flex-direction: column;
@@ -425,6 +637,8 @@
             
             .sidebar {
                 width: 100%;
+                height: auto;
+                position: relative;
                 flex-direction: row;
                 flex-wrap: wrap;
                 border-right: none;
@@ -441,7 +655,8 @@
                 border-bottom: 3px solid transparent;
             }
             
-            .nav-links li:hover, .nav-links li.active {
+            .nav-links li:hover,
+            .nav-links li.active {
                 border-left: none;
                 border-bottom: 3px solid var(--primary);
             }
@@ -449,13 +664,15 @@
             .easy-apps {
                 width: 100%;
             }
-        }
-        
-        @media (max-width: 768px) {
-            .main-content {
-                padding: 15px;
-            }
             
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
             .start-cards {
                 flex-direction: column;
             }
@@ -465,51 +682,188 @@
             }
             
             .btn {
+                width: 100%;
                 justify-content: center;
             }
+            
+            .input-options {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .summary-stats {
+                flex-direction: column;
+            }
+            
+            .stat {
+                width: 100%;
+            }
         }
-        
-        /* Loading animation */
-        .loading {
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 15px;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .summarizer-interface {
+                gap: 20px;
+            }
+        }
+
+        /* ===== NOTIFICATIONS ===== */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-width: 300px;
+            max-width: 400px;
+            animation: slideIn 0.3s ease-out;
+            border-left: 4px solid transparent;
+        }
+
+        .notification.success {
+            background: #d4edda;
+            color: #155724;
+            border-left-color: var(--success);
+        }
+
+        .notification.error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left-color: var(--danger);
+        }
+
+        .notification.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left-color: var(--info);
+        }
+
+        .notification.warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left-color: var(--warning);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* ===== WORD COUNT ===== */
+        .word-count {
+            text-align: right;
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 5px;
+            padding-right: 5px;
+        }
+
+        /* ===== DRAG AND DROP ===== */
+        .drag-over {
+            border-color: var(--primary) !important;
+            background-color: rgba(42, 110, 63, 0.1) !important;
+        }
+
+        /* ===== PROGRESS BAR ===== */
+        .progress-container {
+            width: 100%;
+            background-color: var(--gray-light);
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
             display: none;
-            text-align: center;
-            padding: 20px;
         }
-        
-        .loader {
-            border: 4px solid var(--gray-light);
-            border-top: 4px solid var(--primary);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
+
+        .progress-bar {
+            width: 0%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            border-radius: 10px;
+            transition: width 0.3s ease;
         }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+
+        /* ===== FILE UPLOAD PROGRESS ===== */
+        .upload-progress {
+            width: 100%;
+            margin-top: 10px;
         }
-        
-        /* Highlight for summary */
-        .summary-text {
-            color: var(--dark);
-            line-height: 1.7;
-        }
-        
-        .summary-text h4 {
-            margin-top: 15px;
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
-        
-        .summary-text ul, .summary-text ol {
-            padding-left: 20px;
-            margin-bottom: 15px;
-        }
-        
-        .summary-text li {
+
+        .upload-progress .progress-text {
+            font-size: 0.85rem;
+            color: var(--gray);
             margin-bottom: 5px;
+        }
+
+        /* ===== CONFIG DESCRIPTION ===== */
+        .config-description {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 5px;
+            padding-left: 5px;
+            font-style: italic;
+        }
+
+        /* ===== MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: var(--radius);
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        /* ===== SCROLLBAR STYLING ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-light);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
         }
     </style>
 </head>
@@ -518,17 +872,27 @@
         <!-- Sidebar Navigation -->
         <div class="sidebar">
             <div class="logo">
-                <h1>Easy<span>Summarize</span></h1>
+                <h1>AI<span>Summarizer</span></h1>
+                <p class="subtitle">Complete Single File Version</p>
             </div>
             
             <div class="nav-links">
                 <ul>
-                    <li class="active">
+                    <li class="active" onclick="setActiveNav(this)">
                         <i class="fas fa-home"></i> Home
                     </li>
                 </ul>
             </div>
             
+            <div class="easy-apps">
+                <h3>AI Applications</h3>
+                <div class="app-badge" onclick="loadExample('research')">Research Paper</div>
+                <div class="app-badge" onclick="loadExample('news')">News Article</div>
+                <div class="app-badge" onclick="loadExample('technical')">Technical Doc</div>
+                <div class="app-badge" onclick="loadExample('business')">Business Report</div>
+            </div>
+        </div>
+        
         <!-- Main Content -->
         <div class="main-content">
             <div class="header">
@@ -542,23 +906,23 @@
             
             <!-- Getting Started Section -->
             <div class="getting-started">
-                <h3>Getting Started</h3>
-                <p>Are you using our AI summarizer for the first time? Here's all the information you'll need.</p>
+                <h3><i class="fas fa-rocket"></i> Getting Started</h3>
+                <p>Transform long articles into concise summaries with our AI-powered summarizer.</p>
                 
                 <div class="start-cards">
-                    <div class="card" onclick="showExample('paste')">
-                        <h4>Paste Article Text</h4>
-                        <p>Copy and paste any article text directly into our summarizer.</p>
+                    <div class="card" onclick="loadExample('research')">
+                        <h4>Research Paper</h4>
+                        <p>Summarize academic papers and research articles</p>
                     </div>
                     
-                    <div class="card" onclick="showExample('url')">
-                        <h4>Enter Article URL</h4>
-                        <p>Provide a URL and our AI will fetch and summarize the content.</p>
+                    <div class="card" onclick="loadExample('news')">
+                        <h4>News Article</h4>
+                        <p>Get key points from long news articles quickly</p>
                     </div>
                     
-                    <div class="card" onclick="showExample('file')">
+                    <div class="card" onclick="uploadFile()">
                         <h4>Upload Document</h4>
-                        <p>Upload PDF, DOC, or TXT files for summarization.</p>
+                        <p>Upload PDF, DOC, or TXT files for summarization</p>
                     </div>
                 </div>
             </div>
@@ -570,8 +934,8 @@
                         <i class="fas fa-robot"></i>
                     </div>
                     <div class="ai-info">
-                        <h3>EasySummarize AI Assistant</h3>
-                        <p>Hi! I'm your AI summarization assistant. I can help you create concise summaries of any article.</p>
+                        <h3>AI Summarization Assistant</h3>
+                        <p>Hi! I can summarize any article or document for you.</p>
                     </div>
                 </div>
                 
@@ -579,10 +943,45 @@
                     <!-- Input Section -->
                     <div class="input-section">
                         <h4>Article to Summarize</h4>
-                        <div class="input-box">
+                        <div class="input-box" id="textInputBox">
                             <textarea id="articleInput" placeholder="Paste your article text here or enter a URL..."></textarea>
+                            <div class="word-count" id="wordCount">Words: 0 | Characters: 0</div>
                         </div>
                         
+                        <!-- File Upload Area (Hidden by default) -->
+                        <div class="file-upload-area" id="fileUploadArea">
+                            <div class="file-upload-content" id="uploadContent">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <h4>Upload Document</h4>
+                                <p>Drag & drop files here or click to browse</p>
+                                <p class="file-types">Supported: PDF, DOC, DOCX, TXT (Max 10MB)</p>
+                                <button class="btn btn-primary" onclick="triggerFileInput()">
+                                    <i class="fas fa-folder-open"></i> Browse Files
+                                </button>
+                                <input type="file" id="fileInput" style="display: none;" 
+                                       accept=".pdf,.doc,.docx,.txt" onchange="handleFileSelect(event)">
+                            </div>
+                            <div class="file-info" id="fileInfo">
+                                <div class="file-details">
+                                    <i class="fas fa-file-alt"></i>
+                                    <div>
+                                        <h5 id="fileName">Loading...</h5>
+                                        <p id="fileSize">0 KB</p>
+                                        <p id="fileStatus">Processing...</p>
+                                    </div>
+                                </div>
+                                <button class="btn btn-danger" onclick="removeFile()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Progress Bar -->
+                        <div class="progress-container" id="progressContainer">
+                            <div class="progress-bar" id="progressBar"></div>
+                        </div>
+                        
+                        <!-- Input Type Selection -->
                         <div class="input-options">
                             <div>
                                 <button class="option-btn active" onclick="setInputType('text')">
@@ -591,8 +990,8 @@
                                 <button class="option-btn" onclick="setInputType('url')">
                                     <i class="fas fa-link"></i> URL
                                 </button>
-                                <button class="option-btn" onclick="uploadFile()">
-                                    <i class="fas fa-upload"></i> Upload File
+                                <button class="option-btn" onclick="setInputType('file')">
+                                    <i class="fas fa-upload"></i> File
                                 </button>
                             </div>
                             
@@ -603,27 +1002,35 @@
                             </div>
                         </div>
                         
+                        <!-- Summary Configuration -->
                         <div class="input-options">
                             <div>
                                 <span>Summary Length:</span>
-                                <button class="option-btn active" onclick="setSummaryLength('short')">Short</button>
-                                <button class="option-btn" onclick="setSummaryLength('medium')">Medium</button>
-                                <button class="option-btn" onclick="setSummaryLength('long')">Long</button>
+                                <button class="option-btn active" data-length="short" onclick="setSummaryLength('short')">Short</button>
+                                <button class="option-btn" data-length="medium" onclick="setSummaryLength('medium')">Medium</button>
+                                <button class="option-btn" data-length="long" onclick="setSummaryLength('long')">Long</button>
+                                <button class="option-btn" data-length="detailed" onclick="setSummaryLength('detailed')">Detailed</button>
                             </div>
-                            
-                            <div>
-                                <span>Focus:</span>
-                                <button class="option-btn active" onclick="setSummaryFocus('general')">General</button>
-                                <button class="option-btn" onclick="setSummaryFocus('keypoints')">Key Points</button>
-                                <button class="option-btn" onclick="setSummaryFocus('detailed')">Detailed</button>
-                            </div>
+                            <div class="config-description" id="lengthDescription">Concise summary (2-3 sentences)</div>
                         </div>
                         
+                        <div class="input-options">
+                            <div>
+                                <span>Focus:</span>
+                                <button class="option-btn active" data-focus="general" onclick="setSummaryFocus('general')">General</button>
+                                <button class="option-btn" data-focus="keypoints" onclick="setSummaryFocus('keypoints')">Key Points</button>
+                                <button class="option-btn" data-focus="technical" onclick="setSummaryFocus('technical')">Technical</button>
+                                <button class="option-btn" data-focus="conclusion" onclick="setSummaryFocus('conclusion')">Conclusion</button>
+                            </div>
+                            <div class="config-description" id="focusDescription">General overview of content</div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
                         <div class="action-buttons">
                             <button class="btn btn-primary" onclick="summarizeArticle()">
                                 <i class="fas fa-magic"></i> Summarize Article
                             </button>
-                            <button class="btn btn-secondary" onclick="analyzeArticle()">
+                            <button class="btn btn-secondary" onclick="analyzeText()">
                                 <i class="fas fa-chart-bar"></i> Analyze Text
                             </button>
                         </div>
@@ -634,33 +1041,42 @@
                         <h4>AI Summary</h4>
                         <div class="output-box" id="outputBox">
                             <div class="output-placeholder" id="outputPlaceholder">
-                                <i class="fas fa-robot fa-2x" style="margin-bottom: 15px";></i>
+                                <i class="fas fa-robot"></i>
                                 <p>Your summary will appear here after processing.</p>
-                                <p>Try pasting an article and clicking "Summarize Article".<\p>
+                                <p>Try pasting an article and clicking "Summarize Article".</p>
                             </div>
                             <div class="loading" id="loadingIndicator">
                                 <div class="loader"></div>
-                                <p>AI is processing your article...<\p>
+                                <p>AI is processing your article...</p>
+                                <div class="upload-progress">
+                                    <div class="progress-text" id="progressText">Initializing...</div>
+                                </div>
                             </div>
-                            <div class="summary-text" id="summaryResult" style="display: none;"></div>
+                            <div class="summary-results" id="summaryResults">
+                                <div class="summary-content" id="summaryContent">
+                                    <!-- Summary content will be inserted here -->
+                                </div>
+                            </div>
                         </div>
                         
-                        <div class="summary-stats" id="summaryStats" style="display: none;">
+                        <!-- Statistics -->
+                        <div class="summary-stats" id="summaryStats">
                             <div class="stat">
-                                Original Length: <span id="originalLength">0</span> words
+                                Original: <span id="originalLength">0</span> words
                             </div>
                             <div class="stat">
-                                Summary Length: <span id="summaryLength">0</span> words
+                                Summary: <span id="summaryLength">0</span> words
                             </div>
                             <div class="stat">
                                 Reduction: <span id="reductionPercent">0</span>%
                             </div>
                             <div class="stat">
-                                Time Saved: <span id="timeSaved">0</span> minutes
+                                Time Saved: <span id="timeSaved">0</span> min
                             </div>
                         </div>
                         
-                        <div class="action-buttons" id="outputActions" style="display: none;">
+                        <!-- Output Actions -->
+                        <div class="output-actions" id="outputActions">
                             <button class="btn btn-primary" onclick="copySummary()">
                                 <i class="fas fa-copy"></i> Copy Summary
                             </button>
@@ -676,479 +1092,775 @@
             </div>
             
             <div class="footer">
-                <p>EasySummarize AI Article Summarizer &copy;| All rights reserved</p>
+                <p>AI Article Summarizer &copy; 2024 | Complete Single File Implementation</p>
             </div>
         </div>
     </div>
 
+    <!-- Hidden file input -->
+    <input type="file" id="hiddenFileInput" style="display: none;" accept=".pdf,.doc,.docx,.txt">
+
+    <!-- JavaScript -->
     <script>
-        // Set current date
-        function updateDateTime() {
-    const now = new Date();
-    const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-    document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
-    document.getElementById('currentYear').textContent = now.getFullYear();
-}
-        // Initialize page
+        // ===== CONFIGURATION =====
+        const CONFIG = {
+            maxFileSize: 10 * 1024 * 1024, // 10MB
+            maxTextLength: 50000,
+            processingTime: {
+                short: 1000,
+                medium: 1500,
+                long: 2000,
+                detailed: 2500
+            }
+        };
+
+        // ===== GLOBAL VARIABLES =====
+        let currentFile = null;
+        let currentSummaryLength = 'medium';
+        let currentFocus = 'general';
+
+        // ===== INITIALIZATION =====
         document.addEventListener('DOMContentLoaded', function() {
-            updateDate();
+            updateDateTime();
+            initializeEventListeners();
+            loadDefaultExample();
+            setupDragAndDrop();
             
-            // Set up example articles for demonstration
-            setupExamples();
+            // Set default descriptions
+            updateLengthDescription('short');
+            updateFocusDescription('general');
             
-            // Add event listeners
-            document.getElementById('searchInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    searchKnowledgeBase(this.value);
-                }
-            });
-            
-            document.getElementById('articleInput').addEventListener('input', function() {
-                updateCharCount();
-            });
-            
-            // Initialize UI elements
-            initializeUI();
+            console.log('AI Summarizer initialized successfully!');
         });
+
+        // ===== UTILITY FUNCTIONS =====
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
+        }
+
         function setActiveNav(element) {
-    const navItems = document.querySelectorAll('.nav-links li');
-    navItems.forEach(item => item.classList.remove('active'));
-    element.classList.add('active');
-}
-        // Initialize UI state
-        function initializeUI() {
-            // Hide elements that should be hidden initially
-            document.getElementById('loadingIndicator').style.display = 'none';
-            document.getElementById('summaryStats').style.display = 'none';
-            document.getElementById('outputActions').style.display = 'none';
-            document.getElementById('summaryResult').style.display = 'none';
+            document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
+            element.classList.add('active');
         }
-        
-        // Set input type (text or URL)
+
+        function initializeEventListeners() {
+            // Text input event listener
+            document.getElementById('articleInput').addEventListener('input', updateWordCount);
+            
+            // Search input event listener
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') searchKnowledgeBase(this.value);
+            });
+            
+            // Drag and drop events
+            const fileArea = document.getElementById('fileUploadArea');
+            fileArea.addEventListener('dragover', handleDragOver);
+            fileArea.addEventListener('dragleave', handleDragLeave);
+            fileArea.addEventListener('drop', handleFileDrop);
+        }
+
+        // ===== INPUT TYPE MANAGEMENT =====
         function setInputType(type) {
-            const buttons = document.querySelectorAll('.input-options .option-btn');
-            const inputBox = document.getElementById('articleInput');
+            const textInputBox = document.getElementById('textInputBox');
+            const fileUploadArea = document.getElementById('fileUploadArea');
+            const articleInput = document.getElementById('articleInput');
             
-            // Reset all buttons
-            buttons.forEach(btn => btn.classList.remove('active'));
+            // Update button states
+            document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
             
-            // Activate selected button
             if (type === 'text') {
-                buttons[0].classList.add('active');
-                inputBox.placeholder = "Paste your article text here...";
+                textInputBox.style.display = 'block';
+                fileUploadArea.style.display = 'none';
+                articleInput.placeholder = "Paste your article text here...";
             } else if (type === 'url') {
-                buttons[1].classList.add('active');
-                inputBox.placeholder = "Enter article URL (e.g., https://example.com/article)...";
+                textInputBox.style.display = 'block';
+                fileUploadArea.style.display = 'none';
+                articleInput.placeholder = "Enter article URL (e.g., https://example.com/article)...";
+            } else if (type === 'file') {
+                textInputBox.style.display = 'none';
+                fileUploadArea.style.display = 'flex';
+                showNotification('Click Browse Files or drag & drop a file', 'info');
+            }
+        }
+
+        // ===== TEXT PROCESSING =====
+        function updateWordCount() {
+            const text = document.getElementById('articleInput').value;
+            const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+            const chars = text.length;
+            
+            document.getElementById('wordCount').textContent = `Words: ${words} | Characters: ${chars}`;
+            
+            // Update border color based on content
+            const inputBox = document.querySelector('.input-box');
+            if (words > 0) {
+                inputBox.style.borderColor = 'var(--primary)';
             } else {
-                buttons[2].classList.add('active');
-                inputBox.placeholder = "Upload a file (PDF, DOC, TXT) to summarize...";
+                inputBox.style.borderColor = 'var(--border)';
             }
         }
-        
-        // Set summary length - FIXED SELECTOR
-        function setSummaryLength(length) {
-            // Get all option buttons in the first input-options div after the clear button
-            const inputOptionsContainers = document.querySelectorAll('.input-options');
-            let lengthButtons = null;
-            
-            // Find the container with summary length buttons
-            for (let container of inputOptionsContainers) {
-                if (container.textContent.includes('Summary Length')) {
-                    lengthButtons = container.querySelectorAll('.option-btn');
-                    break;
-                }
-            }
-            
-            if (!lengthButtons || lengthButtons.length < 3) {
-                // Fallback selector
-                lengthButtons = document.querySelectorAll('.input-options div:first-child .option-btn');
-            }
-            
-            if (lengthButtons && lengthButtons.length >= 3) {
-                lengthButtons.forEach(btn => btn.classList.remove('active'));
-                
-                if (length === 'short') lengthButtons[0].classList.add('active');
-                else if (length === 'medium') lengthButtons[1].classList.add('active');
-                else lengthButtons[2].classList.add('active');
-            }
-        }
-        
-        // Set summary focus - FIXED SELECTOR
-        function setSummaryFocus(focus) {
-            // Get all option buttons in the second input-options div
-            const inputOptionsContainers = document.querySelectorAll('.input-options');
-            let focusButtons = null;
-            
-            // Find the container with focus buttons
-            for (let container of inputOptionsContainers) {
-                if (container.textContent.includes('Focus')) {
-                    focusButtons = container.querySelectorAll('.option-btn');
-                    break;
-                }
-            }
-            
-            if (!focusButtons || focusButtons.length < 3) {
-                // Fallback selector
-                const allButtons = document.querySelectorAll('.option-btn');
-                if (allButtons.length >= 6) {
-                    focusButtons = Array.from(allButtons).slice(3, 6);
-                }
-            }
-            
-            if (focusButtons && focusButtons.length >= 3) {
-                focusButtons.forEach(btn => btn.classList.remove('active'));
-                
-                if (focus === 'general') focusButtons[0].classList.add('active');
-                else if (focus === 'keypoints') focusButtons[1].classList.add('active');
-                else focusButtons[2].classList.add('active');
-            }
-        }
-        
-        // Clear input
+
         function clearInput() {
             document.getElementById('articleInput').value = '';
-            updateCharCount();
+            updateWordCount();
+            removeFile();
+            showNotification('Input cleared', 'info');
         }
-        
-        // Upload file (simulated)
+
+        // ===== FILE UPLOAD FUNCTIONS =====
         function uploadFile() {
-            showNotification("File upload feature would be implemented with a backend. For this demo, please paste text directly.", "info");
+            setInputType('file');
+            document.getElementById('fileInput').click();
         }
-        
-        // Show example based on card clicked
-        function showExample(type) {
-            const examples = {
-                paste: `Artificial Intelligence (AI) has rapidly transformed from a niche field of computer science to a mainstream technology impacting nearly every industry. At its core, AI refers to the simulation of human intelligence in machines that are programmed to think and learn like humans. These intelligent systems can perform tasks such as visual perception, speech recognition, decision-making, and language translation.
 
-The development of AI can be traced through several key stages, from early symbolic AI in the 1950s to today's machine learning and deep learning approaches. Modern AI systems are powered by neural networks with millions of parameters, trained on vast datasets to recognize patterns and make predictions with remarkable accuracy.
+        function triggerFileInput() {
+            document.getElementById('fileInput').click();
+        }
 
-Applications of AI are now ubiquitous: from virtual assistants like Siri and Alexa to recommendation algorithms on Netflix and Amazon, from fraud detection in banking to diagnostic tools in healthcare. In business, AI is being used to automate routine tasks, analyze customer behavior, optimize supply chains, and enhance decision-making processes.
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                processSelectedFile(file);
+            }
+        }
 
-However, the rise of AI also brings significant challenges and ethical considerations. Issues around data privacy, algorithmic bias, job displacement, and autonomous weapons systems require careful regulation and oversight. As AI continues to advance, researchers are also working on developing explainable AI (XAI) to make these complex systems more transparent and accountable.
+        function setupDragAndDrop() {
+            const dropArea = document.getElementById('fileUploadArea');
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }
 
-Looking ahead, the future of AI promises even more transformative changes, with developments in areas like quantum machine learning, artificial general intelligence (AGI), and human-AI collaboration. While the timeline for achieving human-level AGI remains uncertain, the ongoing progress in narrow AI applications continues to reshape our world in profound ways.`,
+        function handleDragOver(e) {
+            e.preventDefault();
+            document.getElementById('fileUploadArea').classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            document.getElementById('fileUploadArea').classList.remove('drag-over');
+        }
+
+        function handleFileDrop(e) {
+            e.preventDefault();
+            document.getElementById('fileUploadArea').classList.remove('drag-over');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                processSelectedFile(files[0]);
+            }
+        }
+
+        function processSelectedFile(file) {
+            // Validate file
+            if (!validateFile(file)) return;
+            
+            currentFile = file;
+            
+            // Show file info
+            document.getElementById('uploadContent').style.display = 'none';
+            document.getElementById('fileInfo').style.display = 'flex';
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            document.getElementById('fileStatus').textContent = 'Ready to process';
+            document.getElementById('fileStatus').style.color = 'var(--success)';
+            
+            // Read file content
+            readFileContent(file);
+        }
+
+        function validateFile(file) {
+            // Check file size
+            if (file.size > CONFIG.maxFileSize) {
+                showNotification(`File too large (max ${CONFIG.maxFileSize / (1024 * 1024)}MB)`, 'error');
+                return false;
+            }
+            
+            // Check file type
+            const validTypes = ['.pdf', '.doc', '.docx', '.txt'];
+            const fileExt = '.' + file.name.split('.').pop().toLowerCase();
+            
+            if (!validTypes.includes(fileExt)) {
+                showNotification('Only PDF, DOC, DOCX, and TXT files are allowed', 'error');
+                return false;
+            }
+            
+            return true;
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function readFileContent(file) {
+            showNotification(`Reading file: ${file.name}`, 'info');
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                let content = e.target.result;
                 
-                url: "https://www.bbc.com/news/technology-68925461\nhttps://www.nytimes.com/2024/05/15/technology/ai-regulation-eu.html\nhttps://hbr.org/2024/04/how-generative-ai-is-changing-creative-work",
+                // Handle different file types
+                if (file.name.endsWith('.pdf')) {
+                    // For demo purposes, show a message about PDF
+                    showNotification('PDF content extraction simulated. For real PDFs, use a backend service.', 'warning');
+                    content = `[PDF Content: ${file.name}]\n\nFor demonstration, this would contain the extracted text from the PDF file.`;
+                }
                 
-                file: "For file upload, please select a PDF, DOC, or TXT file containing the article you want to summarize. The AI will extract text from the document and create a concise summary based on your selected preferences."
+                // Update textarea with file content
+                document.getElementById('articleInput').value = content;
+                updateWordCount();
+                setInputType('text');
+                
+                showNotification(`File "${file.name}" loaded successfully!`, 'success');
             };
             
-            if (examples[type]) {
-                document.getElementById('articleInput').value = examples[type];
-                document.getElementById('articleInput').focus();
-                updateCharCount();
-                
-                // Show notification
-                showNotification(`Example ${type === 'paste' ? 'text' : type.toUpperCase()} loaded`, 'info');
-            }
-        }
-        
-        // Update character count - COMPLETE FUNCTION
-        function updateCharCount() {
-            const text = document.getElementById('articleInput').value;
-            const wordCount = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+            reader.onerror = function() {
+                showNotification('Error reading file', 'error');
+            };
             
-            // Update UI if needed
-            const inputBox = document.querySelector('.input-box');
-            if (inputBox) {
-                if (wordCount > 0) {
-                    inputBox.style.borderColor = '#2a6e3f';
-                } else {
-                    inputBox.style.borderColor = '#dee2e6';
-                }
-            }
-            
-            // You can also display word count if you want
-            // console.log(`Word count: ${wordCount}`);
+            // Read as text (for demo - real PDF would need different handling)
+            reader.readAsText(file);
         }
-        
-        // Main function to summarize article
-        function summarizeArticle() {
+
+        function removeFile() {
+            currentFile = null;
+            document.getElementById('uploadContent').style.display = 'block';
+            document.getElementById('fileInfo').style.display = 'none';
+            document.getElementById('fileInput').value = '';
+            showNotification('File removed', 'info');
+        }
+
+        // ===== SUMMARY CONFIGURATION =====
+        function setSummaryLength(length) {
+            currentSummaryLength = length;
+            
+            // Update button states
+            document.querySelectorAll('[data-length]').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            updateLengthDescription(length);
+        }
+
+        function setSummaryFocus(focus) {
+            currentFocus = focus;
+            
+            // Update button states
+            document.querySelectorAll('[data-focus]').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            updateFocusDescription(focus);
+        }
+
+        function updateLengthDescription(length) {
+            const descriptions = {
+                short: "Very concise summary (2-3 sentences, ~100 words)",
+                medium: "Balanced summary (4-5 sentences, ~250 words)",
+                long: "Comprehensive summary (8-10 sentences, ~500 words)",
+                detailed: "Detailed analysis (15+ sentences, ~800 words)"
+            };
+            document.getElementById('lengthDescription').textContent = descriptions[length];
+        }
+
+        function updateFocusDescription(focus) {
+            const descriptions = {
+                general: "General overview of the entire article",
+                keypoints: "Focus on main points and key takeaways",
+                technical: "Technical details and specifications",
+                conclusion: "Conclusions and recommendations"
+            };
+            document.getElementById('focusDescription').textContent = descriptions[focus];
+        }
+
+        // ===== MAIN SUMMARIZATION FUNCTION =====
+        async function summarizeArticle() {
             const articleText = document.getElementById('articleInput').value.trim();
             
+            // Validation
             if (!articleText) {
                 showNotification('Please enter some text to summarize', 'error');
                 return;
             }
             
-            // Show loading indicator
-            document.getElementById('loadingIndicator').style.display = 'block';
-            document.getElementById('outputPlaceholder').style.display = 'none';
-            if (document.getElementById('summaryResult')) {
-                document.getElementById('summaryResult').style.display = 'none';
-            }
-            if (document.getElementById('summaryStats')) {
-                document.getElementById('summaryStats').style.display = 'none';
-            }
-            if (document.getElementById('outputActions')) {
-                document.getElementById('outputActions').style.display = 'none';
-            }
-            
-            // Calculate original stats
-            const originalWords = articleText.split(/\s+/).length;
-            
-            // Simulate API call delay
-            setTimeout(() => {
-                // Generate AI summary (simulated - in real app would call AI API)
-                const summary = generateAISummary(articleText);
-                const summaryWords = summary.split(/\s+/).length;
-                const reduction = Math.round((1 - summaryWords / originalWords) * 100);
-                const timeSaved = Math.ceil((originalWords - summaryWords) / 200);
-                
-                // Display results
-                document.getElementById('loadingIndicator').style.display = 'none';
-                
-                const summaryResult = document.getElementById('summaryResult');
-                if (summaryResult) {
-                    summaryResult.innerHTML = formatSummary(summary);
-                    summaryResult.style.display = 'block';
-                }
-                
-                // Update stats
-                const originalLengthElem = document.getElementById('originalLength');
-                const summaryLengthElem = document.getElementById('summaryLength');
-                const reductionPercentElem = document.getElementById('reductionPercent');
-                const timeSavedElem = document.getElementById('timeSaved');
-                
-                if (originalLengthElem) originalLengthElem.textContent = originalWords;
-                if (summaryLengthElem) summaryLengthElem.textContent = summaryWords;
-                if (reductionPercentElem) reductionPercentElem.textContent = reduction;
-                if (timeSavedElem) timeSavedElem.textContent = timeSaved;
-                
-                const summaryStats = document.getElementById('summaryStats');
-                if (summaryStats) {
-                    summaryStats.style.display = 'flex';
-                }
-                
-                const outputActions = document.getElementById('outputActions');
-                if (outputActions) {
-                    outputActions.style.display = 'flex';
-                }
-                
-                // Show success notification
-                showNotification(`Article summarized successfully! Reduced by ${reduction}%`, 'success');
-            }, 1500); // Simulate processing time
-        }
-        
-        // Analyze article (simulated additional feature)
-        function analyzeArticle() {
-            const articleText = document.getElementById('articleInput').value.trim();
-            
-            if (!articleText) {
-                showNotification('Please enter some text to analyze', 'error');
+            if (articleText.length > CONFIG.maxTextLength) {
+                showNotification('Text is too long. Please shorten it or use a file upload.', 'error');
                 return;
             }
             
-            showNotification('Text analysis would show sentiment, keywords, and readability scores', 'info');
-        }
-        
-        // Generate AI summary (simulated - in a real app, this would call an AI API)
-        function generateAISummary(articleText) {
-            // This is a simplified AI summary generator for demo
+            // Show loading state
+            showLoadingState();
             
-            // Extract sentences
-            const sentences = articleText.split(/[.!?]+/).filter(s => s.trim().length > 0);
+            // Calculate original stats
+            const originalWords = articleText.split(/\s+/).length;
+            const originalChars = articleText.length;
+            
+            // Determine processing time based on length
+            const processingTime = CONFIG.processingTime[currentSummaryLength];
+            
+            // Simulate processing with progress
+            simulateProgress(processingTime, originalWords);
+            
+            // Generate summary after delay
+            setTimeout(() => {
+                try {
+                    const summary = generateAISummary(articleText, currentSummaryLength, currentFocus);
+                    displaySummaryResults(summary, originalWords, originalChars);
+                    showNotification(`Summary generated successfully (${currentSummaryLength}, ${currentFocus})`, 'success');
+                } catch (error) {
+                    console.error('Summarization error:', error);
+                    showNotification('Error generating summary', 'error');
+                    hideLoadingState();
+                }
+            }, processingTime);
+        }
+
+        function showLoadingState() {
+            document.getElementById('outputPlaceholder').style.display = 'none';
+            document.getElementById('summaryResults').style.display = 'none';
+            document.getElementById('summaryStats').style.display = 'none';
+            document.getElementById('outputActions').style.display = 'none';
+            
+            document.getElementById('loadingIndicator').style.display = 'block';
+            document.getElementById('progressContainer').style.display = 'block';
+        }
+
+        function hideLoadingState() {
+            document.getElementById('loadingIndicator').style.display = 'none';
+            document.getElementById('progressContainer').style.display = 'none';
+        }
+
+        function simulateProgress(totalTime, wordCount) {
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            let progress = 0;
+            
+            // Faster progress for smaller texts
+            const increment = Math.min(5, Math.max(1, Math.floor(totalTime / 20)));
+            
+            const interval = setInterval(() => {
+                progress += increment;
+                progressBar.style.width = progress + '%';
+                
+                // Update progress text
+                if (progress < 30) {
+                    progressText.textContent = 'Analyzing text structure...';
+                } else if (progress < 60) {
+                    progressText.textContent = 'Identifying key concepts...';
+                } else if (progress < 90) {
+                    progressText.textContent = 'Generating summary...';
+                } else {
+                    progressText.textContent = 'Finalizing results...';
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                }
+            }, totalTime / 100);
+        }
+
+        function generateAISummary(text, length, focus) {
+            // This is a simulated AI summary generator
+            // In a real application, this would call an AI API
+            
+            // Split into paragraphs
+            const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+            const sentences = extractSentences(text);
             
             if (sentences.length === 0) {
                 return "No meaningful text found to summarize.";
             }
             
-            // Simple algorithm: take first, middle, and last sentences
+            // Determine how many sentences to include based on length
+            let targetSentences;
+            switch (length) {
+                case 'short':
+                    targetSentences = Math.max(2, Math.min(3, Math.floor(sentences.length * 0.2)));
+                    break;
+                case 'medium':
+                    targetSentences = Math.max(3, Math.min(5, Math.floor(sentences.length * 0.3)));
+                    break;
+                case 'long':
+                    targetSentences = Math.max(5, Math.min(8, Math.floor(sentences.length * 0.5)));
+                    break;
+                case 'detailed':
+                    targetSentences = Math.max(8, Math.min(12, Math.floor(sentences.length * 0.7)));
+                    break;
+                default:
+                    targetSentences = Math.max(3, Math.min(5, Math.floor(sentences.length * 0.3)));
+            }
+            
+            // Select sentences based on focus
             let selectedSentences = [];
             
-            // Always include first sentence
-            if (sentences.length > 0) {
-                selectedSentences.push(sentences[0].trim() + ".");
+            // Always include first and last sentences
+            if (sentences.length > 0) selectedSentences.push(sentences[0]);
+            if (sentences.length > 1) selectedSentences.push(sentences[sentences.length - 1]);
+            
+            // Select additional sentences
+            for (let i = 1; i < targetSentences - 1 && i < sentences.length - 1; i++) {
+                const idx = Math.floor(sentences.length / (i + 1));
+                if (idx < sentences.length && !selectedSentences.includes(sentences[idx])) {
+                    selectedSentences.push(sentences[idx]);
+                }
             }
             
-            // Include middle sentence if available
-            if (sentences.length > 2) {
-                const middleIndex = Math.floor(sentences.length / 2);
-                selectedSentences.push(sentences[middleIndex].trim() + ".");
-            }
+            // Generate summary text
+            let summary = selectedSentences.map(s => s.trim() + '.').join(' ');
             
-            // Include last sentence if available
-            if (sentences.length > 1) {
-                selectedSentences.push(sentences[sentences.length - 1].trim() + ".");
-            }
+            // Clean up
+            summary = summary.replace(/\s+/g, ' ').trim();
             
-            // Join selected sentences
-            let summary = selectedSentences.join(" ");
-            
-            // Ensure summary is not too long
-            const maxLength = 300;
-            if (summary.length > maxLength) {
-                summary = summary.substring(0, maxLength) + "...";
+            // Add ellipsis if needed
+            if (summary.length > 300 && !summary.endsWith('.')) {
+                summary += '...';
             }
             
             return summary;
         }
-        
-        // Format summary for display
-        function formatSummary(summary) {
-            // Add some structure to the summary
+
+        function extractSentences(text) {
+            // Improved sentence boundary detection
+            const sentenceRegex = /[^.!?]+[.!?]+/g;
+            const matches = text.match(sentenceRegex);
+            
+            if (!matches) {
+                return text.split(/[.!?]+/).filter(s => s.trim().length > 0).map(s => s.trim() + '.');
+            }
+            
+            return matches.map(s => s.trim()).filter(s => s.length > 10);
+        }
+
+        function displaySummaryResults(summary, originalWords, originalChars) {
+            // Hide loading
+            hideLoadingState();
+            
+            // Calculate statistics
+            const summaryWords = summary.split(/\s+/).length;
+            const summaryChars = summary.length;
+            const reduction = Math.round((1 - summaryWords / originalWords) * 100);
+            const timeSaved = Math.ceil((originalWords - summaryWords) / 200); // 200 wpm reading speed
+            
+            // Update statistics display
+            document.getElementById('originalLength').textContent = originalWords;
+            document.getElementById('summaryLength').textContent = summaryWords;
+            document.getElementById('reductionPercent').textContent = reduction;
+            document.getElementById('timeSaved').textContent = timeSaved;
+            
+            // Format summary for display
+            const formattedSummary = formatSummaryForDisplay(summary, currentSummaryLength, currentFocus);
+            document.getElementById('summaryContent').innerHTML = formattedSummary;
+            
+            // Show results
+            document.getElementById('summaryResults').style.display = 'block';
+            document.getElementById('summaryStats').style.display = 'flex';
+            document.getElementById('outputActions').style.display = 'flex';
+        }
+
+        function formatSummaryForDisplay(summary, length, focus) {
             return `
-                <div class="summary-content">
-                    <h4>Summary</h4>
+                <div class="summary-main">
                     <p>${summary}</p>
-                    
-                    <h4>Key Points</h4>
-                    <ul>
-                        <li>Main concept explained in the article</li>
-                        <li>Important findings or data presented</li>
-                        <li>Conclusions drawn by the author</li>
-                        <li>Relevance to current trends or issues</li>
-                    </ul>
-                    
-                    <h4>AI Analysis</h4>
-                    <p>This summary was generated by AI focusing on the most important information.</p>
                 </div>
+                
+                <h4>Key Points</h4>
+                <ul>
+                    <li>Summary generated with ${length} length focus</li>
+                    <li>Content analyzed with ${focus} perspective</li>
+                    <li>AI-powered extraction of main ideas</li>
+                    <li>Structured for quick comprehension</li>
+                </ul>
+                
+                <h4>AI Analysis</h4>
+                <p>This summary was generated by AI focusing on the most important information from the original text. The algorithm identifies key concepts, main arguments, and essential details to create a concise yet comprehensive overview.</p>
             `;
         }
-        
-        // Copy summary to clipboard
+
+        // ===== EXAMPLE ARTICLES =====
+        function loadExample(type) {
+            const examples = {
+                research: `This study examines the role of digital evidence and artificial intelligence (AI) in detecting suspicious transactions within AI-based donation platforms. While AI improves fundraising efficiency, personalization, and transparency, it also introduces new risks such as money laundering, illegal funding, and fraudulent activities.
+
+The research employs a mixed-methods approach, combining quantitative analysis of transaction data with qualitative interviews of platform administrators. Data was collected from three major AI donation platforms over a 12-month period, encompassing over 500,000 transactions totaling $25 million.
+
+Key findings indicate that AI algorithms can detect suspicious patterns with 92% accuracy, significantly higher than traditional manual review methods. However, the study also reveals that sophisticated fraudsters are increasingly using AI themselves to bypass security measures, creating an ongoing arms race between security systems and malicious actors.
+
+Digital evidence, including transaction metadata, user behavior patterns, and network analysis data, proves crucial in identifying fraudulent activities. The research identifies five primary red flags for suspicious transactions: 1) Unusual donation amounts inconsistent with user history, 2) Rapid succession of transactions from single users, 3) Geographic inconsistencies in IP addresses, 4) Anomalous timing patterns, and 5) Mismatched payment methods and user profiles.
+
+The study concludes that while AI significantly enhances detection capabilities, human oversight remains essential for contextual understanding and ethical decision-making. Recommendations include implementing multi-layered security protocols, establishing standardized digital evidence preservation procedures, and developing industry-wide collaboration frameworks for sharing threat intelligence.
+
+These findings have significant implications for regulatory bodies, platform developers, and non-profit organizations seeking to maintain donor trust while leveraging AI capabilities. As AI donation platforms continue to grow, establishing robust security measures and ethical guidelines will be crucial for sustainable development in the digital philanthropy sector.
+
+Future research should explore the ethical implications of AI decision-making in charitable contexts and develop more sophisticated algorithms that can adapt to evolving fraudulent tactics while maintaining transparency and accountability to donors and regulatory authorities.`,
+
+                news: `Artificial Intelligence is transforming industries at an unprecedented pace, with new developments emerging daily. This article explores the latest advancements in AI technology and their implications for various sectors.
+
+Major tech companies have announced breakthrough innovations in natural language processing, computer vision, and machine learning algorithms. These advancements are enabling more sophisticated applications across healthcare, finance, education, and creative industries.
+
+In healthcare, AI systems are now capable of diagnosing diseases with accuracy rates surpassing human experts in certain cases. Radiologists are using AI-assisted tools to detect early signs of cancer in medical images, while researchers are leveraging machine learning to accelerate drug discovery processes.
+
+The financial sector is witnessing a revolution in fraud detection and risk assessment. AI algorithms analyze millions of transactions in real-time, identifying patterns that would be impossible for humans to detect. This has led to significant reductions in financial fraud while improving customer experience through personalized services.
+
+Educational institutions are adopting AI-powered tutoring systems that adapt to individual learning styles and paces. These systems provide personalized feedback, identify knowledge gaps, and recommend targeted learning materials, potentially revolutionizing traditional education models.
+
+However, these advancements come with significant challenges. Ethical concerns around AI bias, data privacy, and job displacement are becoming increasingly important. Regulatory bodies worldwide are scrambling to establish frameworks that balance innovation with protection of individual rights.
+
+The article concludes that while AI presents tremendous opportunities, responsible development and deployment are crucial. Collaboration between technologists, ethicists, policymakers, and the public will be essential to ensure AI benefits society as a whole.`,
+
+                technical: `Machine Learning Model Architecture for Natural Language Processing
+
+This technical document outlines the architecture of a state-of-the-art transformer-based model for natural language processing tasks. The model employs a multi-layer bidirectional encoder structure with attention mechanisms for contextual understanding.
+
+Architecture Overview:
+1. Input Embedding Layer: Converts tokenized text into dense vector representations
+2. Positional Encoding: Adds positional information to embeddings
+3. Multi-Head Attention: Allows the model to focus on different parts of the input simultaneously
+4. Feed-Forward Networks: Applies non-linear transformations
+5. Layer Normalization: Stabilizes training and improves convergence
+6. Dropout Regularization: Prevents overfitting
+
+Key Specifications:
+- Model Size: 12 layers, 768 hidden dimensions, 12 attention heads
+- Parameters: 110 million trainable parameters
+- Training Data: 40GB of text from diverse sources
+- Vocabulary Size: 50,000 tokens
+- Maximum Sequence Length: 512 tokens
+
+Performance Metrics:
+- Perplexity: 18.7 on validation set
+- BLEU Score: 32.4 for translation tasks
+- Accuracy: 94.2% on GLUE benchmark
+- Inference Speed: 50ms per sequence on GPU
+
+Implementation Details:
+The model is implemented using PyTorch 1.9 with CUDA 11.1 support. Training was conducted on 8 NVIDIA A100 GPUs for 7 days. The optimizer used was AdamW with learning rate scheduling and gradient clipping.
+
+Applications:
+1. Text summarization and generation
+2. Machine translation between languages
+3. Sentiment analysis and classification
+4. Named entity recognition
+5. Question answering systems
+
+Future improvements may include larger model sizes, more efficient attention mechanisms, and better training strategies to reduce computational requirements while maintaining performance.`,
+
+                business: `Quarterly Business Report: AI Technology Division
+
+Executive Summary:
+The AI Technology Division reported record growth this quarter, with revenues increasing by 45% year-over-year. This report details financial performance, product developments, and strategic initiatives for the upcoming quarter.
+
+Financial Highlights:
+- Revenue: $125 million (up 45% YoY)
+- Operating Margin: 32% (up 5 percentage points)
+- R&D Investment: $28 million (22% of revenue)
+- Customer Acquisition: 1,250 new enterprise clients
+- Customer Retention Rate: 94%
+
+Product Development:
+1. AI Summarizer Pro: Launched with 85% customer satisfaction rating
+2. Analytics Dashboard: Enhanced with real-time monitoring capabilities
+3. API Platform: Expanded to support 15 additional languages
+4. Mobile Application: Released with offline functionality
+
+Market Performance:
+- North America: 40% market share (up 8%)
+- Europe: 28% market share (up 5%)
+- Asia-Pacific: 22% market share (up 12%)
+- Emerging Markets: 10% market share (up 15%)
+
+Strategic Initiatives for Next Quarter:
+1. Expand into healthcare and legal sectors
+2. Develop industry-specific AI models
+3. Enhance data privacy and security features
+4. Establish partnerships with academic institutions
+5. Invest in talent acquisition and development
+
+Challenges and Opportunities:
+The division faces challenges including increasing competition, regulatory changes, and talent shortages. However, opportunities exist in emerging markets, new industry applications, and technological advancements.
+
+Recommendations:
+1. Increase R&D investment to 25% of revenue
+2. Accelerate international expansion
+3. Develop comprehensive training programs
+4. Strengthen data governance frameworks
+5. Explore strategic acquisitions
+
+Conclusion:
+The AI Technology Division is well-positioned for continued growth. By executing on strategic initiatives and addressing challenges proactively, the division can maintain its leadership position in the AI software market.`
+            };
+            
+            if (examples[type]) {
+                document.getElementById('articleInput').value = examples[type];
+                updateWordCount();
+                setInputType('text');
+                showNotification(`Loaded ${type} example`, 'success');
+            }
+        }
+
+        function loadDefaultExample() {
+            loadExample('research');
+        }
+
+        // ===== ADDITIONAL FEATURES =====
+        function analyzeText() {
+            const text = document.getElementById('articleInput').value.trim();
+            
+            if (!text) {
+                showNotification('Please enter some text to analyze', 'error');
+                return;
+            }
+            
+            const words = text.split(/\s+/).length;
+            const chars = text.length;
+            const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+            const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+            
+            const analysis = `
+                <h4>Text Analysis Results</h4>
+                <ul>
+                    <li><strong>Word Count:</strong> ${words} words</li>
+                    <li><strong>Character Count:</strong> ${chars} characters</li>
+                    <li><strong>Sentence Count:</strong> ${sentences.length} sentences</li>
+                    <li><strong>Paragraph Count:</strong> ${paragraphs.length} paragraphs</li>
+                    <li><strong>Average Sentence Length:</strong> ${Math.round(words / sentences.length)} words</li>
+                    <li><strong>Reading Time:</strong> ${Math.ceil(words / 200)} minutes (at 200 WPM)</li>
+                </ul>
+                <p><i class="fas fa-lightbulb"></i> <strong>Insight:</strong> This text is ${words > 1000 ? 'quite long' : words > 500 ? 'moderate in length' : 'relatively short'} and would take approximately ${Math.ceil(words / 200)} minutes to read.</p>
+            `;
+            
+            // Show in a simple alert or could be displayed in output area
+            showNotification(`Text Analysis: ${words} words, ${chars} characters, ${sentences.length} sentences`, 'info');
+            
+            // For a more detailed view, we could display in the output area
+            document.getElementById('summaryContent').innerHTML = analysis;
+            document.getElementById('summaryResults').style.display = 'block';
+            document.getElementById('outputPlaceholder').style.display = 'none';
+            document.getElementById('summaryStats').style.display = 'none';
+            document.getElementById('outputActions').style.display = 'none';
+        }
+
+        function searchKnowledgeBase(query = null) {
+            const searchTerm = query || document.getElementById('searchInput').value;
+            
+            if (!searchTerm.trim()) {
+                showNotification('Please enter a search term', 'warning');
+                return;
+            }
+            
+            showNotification(`Searching for: "${searchTerm}"`, 'info');
+            
+            // Simulated search results
+            const results = [
+                "How to use the AI summarizer",
+                "Best practices for writing articles",
+                "Understanding summary length options",
+                "File upload guidelines",
+                "Troubleshooting common issues"
+            ];
+            
+            const filtered = results.filter(r => r.toLowerCase().includes(searchTerm.toLowerCase()));
+            
+            if (filtered.length > 0) {
+                showNotification(`Found ${filtered.length} results for "${searchTerm}"`, 'success');
+            } else {
+                showNotification(`No results found for "${searchTerm}"`, 'warning');
+            }
+        }
+
         function copySummary() {
-            const summaryResult = document.getElementById('summaryResult');
-            if (!summaryResult) return;
+            const summaryText = document.getElementById('summaryContent').textContent;
             
-            const summaryText = summaryResult.textContent || summaryResult.innerText;
-            
-            // Create a temporary textarea to copy text
-            const textArea = document.createElement('textarea');
-            textArea.value = summaryText;
-            document.body.appendChild(textArea);
-            textArea.select();
-            textArea.setSelectionRange(0, 99999); // For mobile devices
-            
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showNotification('Summary copied to clipboard!', 'success');
-                } else {
-                    showNotification('Failed to copy summary', 'error');
-                }
-            } catch (err) {
-                console.error(Copy);
+            navigator.clipboard.writeText(summaryText).then(() => {
+                showNotification('Summary copied to clipboard!', 'success');
+            }).catch(err => {
+                console.error('Copy failed:', err);
                 showNotification('Copy failed. Please select and copy manually.', 'error');
-            }
-            
-            document.body.removeChild(textArea);
+            });
         }
-        
-        // Download summary
+
         function downloadSummary() {
-            const summaryResult = document.getElementById('summaryResult');
-            if (!summaryResult) return;
+            const summaryText = document.getElementById('summaryContent').textContent;
+            const length = currentSummaryLength;
+            const focus = currentFocus;
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/[:]/g, '-');
             
-            const summaryText = summaryResult.textContent || summaryResult.innerText;
+            const blob = new Blob([summaryText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ai-summary-${length}-${focus}-${timestamp}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
             
-            try {
-                const blob = new Blob([summaryText], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'article-summary.txt';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                
-                showNotification('Summary downloaded as text file!', 'success');
-            } catch (error) {
-                console.error();
-                showNotification('Download failed. Please try again.', 'error');
-            }
+            showNotification('Summary downloaded!', 'success');
         }
-        
-        // Share summary
+
         function shareSummary() {
-            const summaryResult = document.getElementById('summaryResult');
-            if (!summaryResult) return;
-            
-            const summaryText = (summaryResult.textContent || summaryResult.innerText).substring(0, 100) + '...';
+            const summaryText = document.getElementById('summaryContent').textContent.substring(0, 100) + '...';
+            const length = currentSummaryLength;
             
             if (navigator.share) {
                 navigator.share({
-                    title: 'Article Summary',
+                    title: `AI Summary (${length})`,
                     text: summaryText,
                     url: window.location.href
                 }).catch(error => {
-                    console.log('Sharing cancelled or failed:');
+                    console.log('Sharing cancelled:', error);
                 });
             } else {
-                showNotification('Web Share API not supported in your browser', 'info');
+                showNotification('Sharing not supported in this browser', 'info');
             }
         }
-        
-        // Show notification - COMPLETE FUNCTION
+
+        function clearSummary() {
+            document.getElementById('summaryResults').style.display = 'none';
+            document.getElementById('summaryStats').style.display = 'none';
+            document.getElementById('outputActions').style.display = 'none';
+            document.getElementById('outputPlaceholder').style.display = 'flex';
+            showNotification('Summary cleared', 'info');
+        }
+
+        // ===== NOTIFICATION SYSTEM =====
         function showNotification(message, type = 'info') {
             // Remove existing notification
-            const existingNotification = document.querySelector('.custom-notification');
-            if (existingNotification) {
-                existingNotification.remove();
-            }
+            const existing = document.querySelector('.notification');
+            if (existing) existing.remove();
             
-            // Create notification
+            // Create notification element
             const notification = document.createElement('div');
-            notification.className = `custom-notification ${type}`;
-            
-            // Set colors based on type
-            let bgColor, textColor, borderColor;
-            switch(type) {
-                case 'error':
-                    bgColor = '#f8d7da';
-                    textColor = '#721c24';
-                    borderColor = '#f5c6cb';
-                    break;
-                case 'success':
-                    bgColor = '#d4edda';
-                    textColor = '#155724';
-                    borderColor = '#c3e6cb';
-                    break;
-                default: // info
-                    bgColor = '#d1ecf1';
-                    textColor = '#0c5460';
-                    borderColor = '#bee5eb';
-            }
-            
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: ${bgColor};
-                color: ${textColor};
-                padding: 15px 20px;
-                border-radius: 6px;
-                box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-                z-index: 1000;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                min-width: 300px;
-                max-width: 400px;
-                border-left: 4px solid ${borderColor};
-                animation: slideIn 0.3s ease-out;
-            `;
-            
+            notification.className = `notification ${type}`;
             notification.innerHTML = `
                 <span>${message}</span>
                 <button onclick="this.parentElement.remove()" style="background: none; border: none; cursor: pointer; color: inherit; font-size: 18px; margin-left: 15px;">&times;</button>
             `;
             
-            // Add animation keyframes if not already present
-            if (!document.querySelector('notification-animation')) {
+            // Add animation styles if not present
+            if (!document.querySelector('#notification-styles')) {
                 const style = document.createElement('style');
-                style.id = 'notification-animation';
+                style.id = 'notification-styles';
                 style.textContent = `
                     @keyframes slideIn {
-                        from {
-                            transform: translateX(100%);
-                            opacity: 0;
-                        }
-                        to {
-                            transform: translateX(0);
-                            opacity: 1;
-                        }
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
                     }
                 `;
                 document.head.appendChild(style);
@@ -1163,27 +1875,10 @@ Looking ahead, the future of AI promises even more transformative changes, with 
                 }
             }, 3000);
         }
-        
-        // Setup examples for demonstration
-        function setupExamples() {
-            // Preload an example article
-            const exampleArticle = `Artificial Intelligence (AI) has rapidly transformed from a niche field of computer science to a mainstream technology impacting nearly every industry. At its core, AI refers to the simulation of human intelligence in machines that are programmed to think and learn like humans. These intelligent systems can perform tasks such as visual perception, speech recognition, decision-making, and language translation.
 
-The development of AI can be traced through several key stages, from early symbolic AI in the 1950s to today's machine learning and deep learning approaches. Modern AI systems are powered by neural networks with millions of parameters, trained on vast datasets to recognize patterns and make predictions with remarkable accuracy.
-
-Applications of AI are now ubiquitous: from virtual assistants like Siri and Alexa to recommendation algorithms on Netflix and Amazon, from fraud detection in banking to diagnostic tools in healthcare. In business, AI is being used to automate routine tasks, analyze customer behavior, optimize supply chains, and enhance decision-making processes.
-
-However, the rise of AI also brings significant challenges and ethical considerations. Issues around data privacy, algorithmic bias, job displacement, and autonomous weapons systems require careful regulation and oversight. As AI continues to advance, researchers are also working on developing explainable AI (XAI) to make these complex systems more transparent and accountable.
-
-Looking ahead, the future of AI promises even more transformative changes, with developments in areas like quantum machine learning, artificial general intelligence (AGI), and human-AI collaboration. While the timeline for achieving human-level AGI remains uncertain, the ongoing progress in narrow AI applications continues to reshape our world in profound ways.`;
-            
-            // Set as initial text for demonstration
-            const articleInput = document.getElementById('articleInput');
-            if (articleInput) {
-                articleInput.value = exampleArticle;
-                updateCharCount();
-            }
-        }
+        // ===== INITIALIZATION COMPLETE =====
+        console.log('AI Article Summarizer loaded successfully!');
+        showNotification('AI Summarizer ready! Try pasting text or using an example.', 'success');
     </script>
 </body>
 </html>
